@@ -1,5 +1,5 @@
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { badRequest, serverError, unauthorized } from '../../helpers/http-helper'
+import { badRequest, okResponse, serverError, unauthorized } from '../../helpers/http-helper'
 import { SigninController } from './signin'
 import { Authentication, EmailValidator, HttpRequest } from './signin-protocols'
 
@@ -112,5 +112,11 @@ describe('signin Controller', () => {
     })
     const httpResponse = await sut.handle(makeHttpRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  it('Should return 200 if valid credentails are provided', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeHttpRequest())
+    expect(httpResponse).toEqual(okResponse({ accessToken: 'my_token' }))
   })
 })
