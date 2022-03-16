@@ -1,5 +1,5 @@
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { badRequest, serverError } from '../../helpers/http-helper'
+import { badRequest, serverError, unauthorized } from '../../helpers/http-helper'
 import { EmailValidator } from '../signup/signup-protocols'
 import { SigninController } from './signin'
 import { HttpRequest } from '../../protocols/http'
@@ -98,5 +98,12 @@ describe('signin Controller', () => {
     const authSpy = jest.spyOn(authenticationStub, 'auth')
     await sut.handle(makeHttpRequest())
     expect(authSpy).toHaveBeenCalledWith('my_email@mail.com', 'my_password')
+  })
+
+  it('Should return 401 if invalid credentails are provided', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(null as any)
+    const httpResponse = await sut.handle(makeHttpRequest())
+    expect(httpResponse).toEqual(unauthorized())
   })
 })
