@@ -20,7 +20,6 @@ export class SignUpController implements Controller {
         return badRequest(error)
       }
       const { name, email, password, passwordConfirm } = httpRequest.body
-
       if (password !== passwordConfirm) {
         return badRequest(new InvalidParamError('passwordConfirm'))
       }
@@ -33,7 +32,6 @@ export class SignUpController implements Controller {
         email,
         password
       })
-
       return okResponse(account)
     } catch (error) {
       return serverError(error)
