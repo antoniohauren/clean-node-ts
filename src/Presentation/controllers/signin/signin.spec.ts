@@ -1,7 +1,7 @@
 import { MissingParamError } from '../../errors'
 import { badRequest, okResponse, serverError, unauthorized } from '../../helpers/http/http-helper'
 import { SigninController } from './signin'
-import { Authentication, HttpRequest, Validation } from './signin-protocols'
+import { Authentication, AuthenticationModel, HttpRequest, Validation } from './signin-protocols'
 
 interface SutTypes {
   sut: SigninController
@@ -11,7 +11,7 @@ interface SutTypes {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth (email: string, password: string): Promise<string> {
+    async auth (authentication: AuthenticationModel): Promise<string> {
       return 'my_token'
     }
   }
@@ -50,7 +50,7 @@ describe('signin Controller', () => {
     const { sut, authenticationStub } = makeSut()
     const authSpy = jest.spyOn(authenticationStub, 'auth')
     await sut.handle(makeHttpRequest())
-    expect(authSpy).toHaveBeenCalledWith('my_email@mail.com', 'my_password')
+    expect(authSpy).toHaveBeenCalledWith({ email: 'my_email@mail.com', password: 'my_password' })
   })
 
   it('Should return 401 if invalid credentails are provided', async () => {
