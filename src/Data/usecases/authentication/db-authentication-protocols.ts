@@ -1,6 +1,6 @@
 export * from '../../../Domain/models/account'
 export * from '../../../Domain/usecases/authentication'
 export * from '../../protocols/criptography/hash-comparer'
-export * from '../../protocols/criptography/token-generator'
+export * from '../../protocols/criptography/encrypter'
 export * from '../../protocols/db/load-account-email-by-repository'
 export * from '../../protocols/db/update-access-token-repository'
