@@ -51,8 +51,9 @@ describe('Account Mongodb Repository', () => {
     expect(account.password).toBe('my_password')
   })
 
-  it('Should return an account on loadByEmail success', async () => {
+  it('Should return false when loadByEmail fails', async () => {
     const sut = makeSut()
     const account = await sut.loadByEmail('my_mail@mail.com')
     expect(account).toBeFalsy()
+  })
 })
